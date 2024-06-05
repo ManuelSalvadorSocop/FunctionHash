@@ -1,0 +1,44 @@
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+public class MultiplicationMethodHashTest {
+    private MultiplicationMethodHash hashFunction;
+
+    @BeforeEach
+    public void setUp() {
+        hashFunction = new MultiplicationMethodHash(1024, 0.61803398875); // A = (sqrt(5) - 1) / 2
+    }
+
+    @Test
+    public void testPositiveKey() {
+        int hashValue = hashFunction.hash(123456);
+        assertEquals(987, hashValue);
+    }
+
+    @Test
+    public void testZeroKey() {
+        int hashValue = hashFunction.hash(0);
+        assertEquals(0, hashValue);
+    }
+
+    @Test
+    public void testNegativeKey() {
+        int hashValue = hashFunction.hash(-123456);
+        assertEquals(36, hashValue);
+    }
+
+    @Test
+    public void testDifferentTableSize() {
+        MultiplicationMethodHash smallTableHash = new MultiplicationMethodHash(32, 0.61803398875);
+        int hashValue = smallTableHash.hash(123456);
+        assertEquals(31, hashValue);
+    }
+
+    @Test
+    public void testDifferentA() {
+        MultiplicationMethodHash differentAHash = new MultiplicationMethodHash(1024, 0.5);
+        int hashValue = differentAHash.hash(123456);
+        assertEquals(512, hashValue);
+    }
+}
